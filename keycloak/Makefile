@@ -1,0 +1,17 @@
+# Makefile for building standalone (dev) keycloak container
+
+IMAGE_NAME := quay.io/brbaker/keycloak
+TAG := latest
+
+.PHONY: all build push clean
+
+all: build push
+
+build:
+	podman build -t $(IMAGE_NAME):$(TAG) .
+
+push:
+	podman push $(IMAGE_NAME):$(TAG)
+
+clean:
+	podman rmi -f $(IMAGE_NAME):$(TAG) || true

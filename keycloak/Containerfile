@@ -1,0 +1,42 @@
+FROM registry.fedoraproject.org/fedora-minimal:latest
+
+# Install Java, unzip, bash (for kc.sh) and curl (for readiness checks)
+RUN microdnf install -y \
+        java-21-openjdk-headless \
+        unzip \
+        bash \
+        curl \
+    && microdnf clean all
+
+# Base directory for RHBK
+WORKDIR /keycloak
+
+# Copy the zip file from the build context
+COPY ./rhbk-26.4.6.zip /tmp/rhbk-26.4.6.zip
+
+# Unzip into /keycloak and clean up the zip
+RUN unzip /tmp/rhbk-26.4.6.zip -d /keycloak \
+    && rm /tmp/rhbk-26.4.6.zip
+
+# Set working dir to the extracted distribution
+WORKDIR /keycloak/rhbk-26.4.6
+
+# Ensure startup script is executable
+RUN chmod +x bin/kc.sh
+
+# Copy our entrypoint script
+COPY ./src/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Optional but conventional
+ENV KEYCLOAK_HOME=/keycloak/rhbk-26.4.6
+
+# Persist embedded H2 database
+VOLUME ["/keycloak/rhbk-26.4.6/data/h2"]
+
+# Default HTTP port
+EXPOSE 8080
+
+# Use the entrypoint script to start and configure Keycloak
+ENTRYPOINT ["/entrypoint.sh"]
+
