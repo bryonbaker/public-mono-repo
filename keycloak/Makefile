@@ -1,7 +1,7 @@
 # Makefile for building standalone (dev) keycloak container
 
 IMAGE_NAME := quay.io/brbaker/keycloak
-TAG := latest
+TAG := v0.1.1
 
 .PHONY: all build push clean
 

@@ -11,12 +11,20 @@ RUN microdnf install -y \
 # Base directory for RHBK
 WORKDIR /keycloak
 
+# Define a writable home directory
+ENV HOME=/keycloak
+
+
 # Copy the zip file from the build context
 COPY ./rhbk-26.4.6.zip /tmp/rhbk-26.4.6.zip
 
 # Unzip into /keycloak and clean up the zip
 RUN unzip /tmp/rhbk-26.4.6.zip -d /keycloak \
     && rm /tmp/rhbk-26.4.6.zip
+
+# 📌 Make Keycloak home writable by any UID that is in group 0 (OpenShift's random UID pattern)
+RUN chown -R 0:0 /keycloak \
+ && chmod -R g+rwX /keycloak
 
 # Set working dir to the extracted distribution
 WORKDIR /keycloak/rhbk-26.4.6

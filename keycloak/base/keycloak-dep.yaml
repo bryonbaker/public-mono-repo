@@ -35,8 +35,8 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: quay.io/brbaker/keycloak:latest
-          imagePullPolicy: IfNotPresent
+          image: quay.io/brbaker/keycloak:v0.1.1
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               name: http
@@ -86,9 +86,10 @@ spec:
   to:
     kind: Service
     name: keycloak
+    weight: 100
   port:
     targetPort: http
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Allow
-
+  wildcardPolicy: None
