@@ -4,11 +4,15 @@ This app provides a way to build a developer instance of Keycloak as a container
 
 ## Building
 
-Before building, update the Makefile with the repo and label you want to use.
+Before building:
+
+1. Update the Makefile with the repo and label you want to use.
 
 ```bash
 make build
 ```
+
+2. Download the Keycloak release from Red Hat. The url can be found in the Keycloak documentation. The `rhbk-<release>.zip` file must exist in the same directory as the `Containerfile`. This build uses release `26.4.6`.
 
 ## Running locally
 
