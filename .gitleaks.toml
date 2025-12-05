@@ -2,5 +2,5 @@
   description = "Allow specific secret files as they are not secrets that matter."
 
   paths = [
-    "keycloak/base/admin-secret.yaml"
+    "keycloak/yaml/admin-secret.yaml"
   ]
